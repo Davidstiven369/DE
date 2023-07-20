@@ -68,4 +68,37 @@ exports.create = async(req, res) => {
             });
         }
     });
+
+
+}
+
+
+exports.byProyectos = (req, res) => {
+
+    const id_proyecto = req.params.id;
+    let horas = 0;
+
+    Esfuerzo.esfuerzosPorProyecto(id_proyecto, (err, esfuerzos) => {
+        if (err) {
+            return res.status(404).json({
+                ok: false,
+                mensaje: 'No se encontraron datos correspondiente al proyecto',
+                errors: err
+            });
+        } else {
+            esfuerzos.map(esfuerzo => {
+                horas += esfuerzo.horas_hombre_dev;
+            })
+            res.status(200).json({
+                horas,
+                esfuerzos,
+
+            })
+        }
+
+
+    });
+
+
+
 }

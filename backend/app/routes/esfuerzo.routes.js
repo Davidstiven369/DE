@@ -8,4 +8,7 @@ module.exports = app => {
     //consultar esfuerzos
     app.get("/esfuerzos", esfuerzo.getAll);
 
+    //consultar total horas dev por proyecto
+    app.get("/esfuerzos/:id", esfuerzo.byProyectos);
+
 };
