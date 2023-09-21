@@ -36,5 +36,17 @@ Usuario.getAll = result => {
     });
 };
 
+Usuario.getAll = result => {
+    sql.query("SELECT * FROM usuario", (err, res) => {
+        if (err) {
+            console.log("Error", err);
+            result(null, err);
+            return;
+        }
+
+        console.log("Usuario", res);
+        result(null, res);
+    });
+};
 
 module.exports = Usuario;

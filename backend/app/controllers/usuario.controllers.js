@@ -24,6 +24,7 @@ exports.getAllUsers = (req, res) => {
 exports.create = (req, res) => {
 
     var body = req.body;
+     
 
     const usuario = new Usuario({
         nombre: body.nombre,
@@ -32,22 +33,22 @@ exports.create = (req, res) => {
         cargo: body.cargo,
         telefono: body.telefono
     });
+      console.log(usuario)
 
-
-    // Guardar usuario en la base de datos
-    Usuario.create(usuario, (err, data) => {
+     
+      Usuario.create(usuario, (err, data) => {
         if (err) {
             return res.status(400).json({
                 ok: false,
                 mensaje: "rellenar todos los campos",
                 errors: err
-            });
-        } else {
-            res.status(201).json({
-                ok: true,
-                usuario: usuario,
-                usuariotoke: req.usuario
-            });
-        }
-    });
+              });
+          } else {
+              res.status(201).json({
+                  ok: true,
+                  usuario: usuario,
+                  usuariotoke: req.usuario
+              });
+          }
+      }); 
 }
