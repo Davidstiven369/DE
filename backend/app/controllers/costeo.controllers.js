@@ -61,22 +61,25 @@ const h_gerencia = await new Promise((resolve, reject) => {
 });
 
 
- const p_refinamiento = body.p_refinamiento;
- const p_arquitectura = body.p_arquitectura;
- const p_desarrollo = body.p_desarrollo;
- const p_sqa=body.p_sqa;
- const p_tolerancia = body.p_tolerancia;
- const p_gerencia = body.p_gerencia;
+ const p_refinamiento = body.p_refinamiento/100;
+ const p_arquitectura = body.p_arquitectura/100;
+ const p_desarrollo = body.p_desarrollo/100;
+ const p_sqa=body.p_sqa/100;
+ const p_tolerancia = body.p_tolerancia/100;
+ const p_gerencia = body.p_gerencia/100;
  const p_valor_hora = body.p_valor_hora;
- const p_Sub_total = p_refinamiento + p_arquitectura + p_desarrollo + p_sqa;
+ const p_Sub_total = (p_refinamiento + p_arquitectura + p_desarrollo + p_sqa);
  const h_desarrollo_value = h_desarrollo && h_desarrollo[0] && h_desarrollo[0].h_desarrollo;
+ 
  const h_arquitectura_value = h_arquitectura && h_arquitectura[0] && h_arquitectura[0].h_arquitectura;
- const resultado = Math.ceil((p_arquitectura * h_desarrollo_value) / p_desarrollo + h_arquitectura_value);
+  
+ const resultado = Math.ceil((p_arquitectura * h_desarrollo_value) / p_desarrollo )+ h_arquitectura_value;
+ 
  const h_refinamiento_value = h_refinamiento && h_refinamiento[0] && h_refinamiento[0].h_refinamiento;
- const resultado1 = Math.ceil((p_refinamiento * h_desarrollo_value) / p_desarrollo + h_refinamiento_value);
+ const resultado1 = Math.ceil((p_refinamiento * h_desarrollo_value) / p_desarrollo) + h_refinamiento_value;
 
  const h_sqa_value = h_sqa && h_sqa[0] && h_sqa[0].h_sqa;
- const resultado2 = Math.ceil((p_sqa * h_desarrollo_value) / p_desarrollo + h_sqa_value);
+ const resultado2 = Math.ceil((p_sqa * h_desarrollo_value) / p_desarrollo )+ h_sqa_value;
  const h_Sub_total =h_refinamiento_value + h_arquitectura_value + h_desarrollo_value + resultado2;
  const h_tolerancia = Math.ceil(p_tolerancia*h_Sub_total) ;
 
@@ -153,7 +156,7 @@ const h_gerencia = await new Promise((resolve, reject) => {
                       res.status(201).json({
                           ok: true,
                           costeo: costeo,
-                          costeo: req.costeo
+                          costeo: data
                       });
                   }
               });
@@ -166,11 +169,11 @@ const h_gerencia = await new Promise((resolve, reject) => {
          
         
    
-};
+}; 
 
 // obtener todos 
 exports.getAll = (req, res) => {
-    costeo.getAll((err, costeos) => {
+    Costeo.getAll((err, costeos) => {
         if (err) {
             return res.status(500).json({
                 ok: false,
@@ -183,6 +186,6 @@ exports.getAll = (req, res) => {
                 costeos: costeos,
             })
         }
-    });
+    }); 
 }
 

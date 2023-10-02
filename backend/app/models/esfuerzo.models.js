@@ -6,7 +6,10 @@ const Esfuerzo = function(esfuerzo) {
     this.hu = esfuerzo.hu;
     this.horas_hombre_dev = esfuerzo.horas_hombre_dev;
     this.id_maestroesfuerzo = esfuerzo.id_maestroesfuerzo;
-    this.id_esfuerzopivote = esfuerzo.id_esfuerzopivote
+    this.id_esfuerzopivote = esfuerzo.id_esfuerzopivote;
+    this.total=esfuerzo.total;
+    
+    
 }
 
 Esfuerzo.create = (esfuerzoNuevo, result) => {
@@ -23,17 +26,28 @@ Esfuerzo.create = (esfuerzoNuevo, result) => {
 };
 
 Esfuerzo.getAll = result => {
-    sql.query("SELECT * FROM esfuerzo", (err, res) => {
-        if (err) {
-            console.log("Error", err);
-            result(null, err);
-            return;
-        }
-
+    // Primera consulta para seleccionar todos los registros
+    sql.query("SELECT * FROM esfuerzo;", (err, res) => {
+      if (err) {
+        console.log("Error", err);
+        result(null, err);
+      } else {
         console.log("Esfuerzo", res);
-        result(null, res);
+        // Segunda consulta para calcular la suma
+        sql.query("SELECT SUM(horas_hombre_dev) AS total FROM esfuerzo;", (err2, res2) => {
+          if (err2) {
+            console.log("Error", err2);
+            result(null, err2);
+          } else {
+            console.log("Total horas hombre dev", res2);
+            const totalHoras = res2[0].total; // se obtiene el valor de 'total' del primer elemento del array
+            result(null, { esfuerzo: res, total_horas_hombre_desarrollo: totalHoras }); // pasar el valor de 'total' al resultado
+          }
+        });
+      }
     });
-};
+  };
+  
 
 
 

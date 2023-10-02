@@ -1,6 +1,5 @@
 const Maestroesfuerzo = require("../models/maestroesfuerzo.models");
 
-
 //Obtener todos los maestros esfuerzos 
 // =======================================
 exports.getAll = (req, res) => {
@@ -22,19 +21,23 @@ exports.getAll = (req, res) => {
 
 exports.create = async(req, res) => {
 
+
+
+
+
+
+
+
     const queryResult2 = await Maestroesfuerzo.getOnee(1);
     const firstElemnt2 = queryResult2[0];
     const { grado } = firstElemnt2;
-
 
     const queryResult3 = await Maestroesfuerzo.getTwoo(1);
     const firstElemnt3 = queryResult3[0];
     const { total_esfuerzo_horas_h } = firstElemnt3;
 
-
     const operacionhhd1 = Math.ceil((grado * total_esfuerzo_horas_h) / 3);
     let resultado = 0;
-
 
     for (let i = 0; i < operacionhhd1; i++) {
         // Lógica dentro del bucle
@@ -42,9 +45,7 @@ exports.create = async(req, res) => {
         console.log("Iteración: ", i + " Valor de operacionhhd1: " + operacionhhd1);
     }
 
-
     console.log("Resultado:", resultado);
-
 
 
     // Crear un nuevo esfuerzo
@@ -52,7 +53,6 @@ exports.create = async(req, res) => {
         total_horas_hombre_dev: operacionhhd1
 
     });
-
 
 
     // Guardar esfuerzo en la base de datos

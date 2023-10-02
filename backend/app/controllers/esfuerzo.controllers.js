@@ -3,23 +3,24 @@ const Esfuerzo = require("../models/esfuerzo.models");
 
 //Obtener todos los esfuerzos 
 // =======================================
-exports.getAll = (req, res) => {
-    Esfuerzo.getAll((err, esfuerzos) => {
+exports.getAll= (req, res) => {
+    Esfuerzo.getAll((err, esfuerzos,total) => {
         if (err) {
             return res.status(500).json({
                 ok: false,
-                mensaje: 'Error cargando esfuerzo',
+                mensaje: 'Error cargando esfuerzos',
                 errors: err
             });
         } else {
             res.status(200).json({
                 ok: true,
-                esfuerzos: esfuerzos,
+                 esfuerzos: esfuerzos,
+                 total:total
+                
             })
         }
     });
 };
-
 exports.create = async(req, res) => {
 
     const {

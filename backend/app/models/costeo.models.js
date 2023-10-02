@@ -131,6 +131,20 @@ Costeo.h_gerencia= (h_gerencia,result) => {
 };
 
 
+Costeo.getAll = result => {
+    sql.query("SELECT h_desarrollo, h_arquitectura, h_refinamiento, h_sqa, h_Sub_total, h_tolerancia, h_gerencia, h_total, v_refinamiento, v_arquitectura, v_desarrollo, v_sqa, v_Sub_total, v_tolerancia, v_gerencia, v_total FROM costeo ORDER BY id_costeo DESC LIMIT 1;", (err, res) => {
+        if (err) {
+            console.log("Error", err);
+            result(null, err);
+            return;
+        }
+
+        console.log("costeo", res);
+        result(null, res);
+    });
+};
+
+
 
   module.exports = Costeo;
 
