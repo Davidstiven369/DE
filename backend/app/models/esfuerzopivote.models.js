@@ -1,6 +1,33 @@
-const sql = require("./db");
+
 
 // Constructor
+
+//const Epicahistoria = function(epicahistoria){
+    
+  //this.epicahistoria=epicahistoria.epicahistoria;
+
+//}
+
+
+//Esfuerzopivote.getEpicasPorProyecto = (id_proyecto, callback) => {
+ // const query = `
+   // SELECT epica FROM tamanio
+  //  WHERE id_proyecto = ?;
+  //`;
+  
+ // sql.query(query, [id_proyecto], (err, results) => {
+  //  if (err) {
+    //  console.error(err);
+//      return callback(err, null);
+  //  }
+
+//    const epicas = results.map((row) => row.epica);
+//    callback(null, epicas);
+//  });
+//};
+const sql = require("./db");
+
+
 const Esfuerzopivote = function(esfuerzopivote) {
     this.epica = esfuerzopivote.epica;
     this.hu = esfuerzopivote.hu;
@@ -18,6 +45,11 @@ const Esfuerzopivote = function(esfuerzopivote) {
     this.soporte_bugs_UAT = esfuerzopivote.soporte_bugs_UAT;
     this.total_esfuerzo_horas_h = esfuerzopivote.total_esfuerzo_horas_h;
     this.id_tamanio = esfuerzopivote.id_tamanio;
+   
+    //this.epicahistoria=esfuerzopivote.epicahistoria;
+    //this.epicas.esfuerzopivote.epicas;
+  
+   
 }
 
 Esfuerzopivote.create = (esfuerzopivoteNuevo, result) => {
@@ -33,6 +65,8 @@ Esfuerzopivote.create = (esfuerzopivoteNuevo, result) => {
 
 };
 
+
+
 Esfuerzopivote.getAll = result => {
     sql.query("SELECT * FROM esfuerzopivote", (err, res) => {
         if (err) {
@@ -46,7 +80,38 @@ Esfuerzopivote.getAll = result => {
     });
 };
 
+Esfuerzopivote.get = (id_proyecto, result) => {
+    sql.query("SELECT epica, hu FROM tamanio WHERE id_proyecto = ? AND grado = (SELECT MIN(grado) FROM tamanio WHERE id_proyecto = ?);", [id_proyecto,id_proyecto],  (err, res) => {
+        if (err) {
+            console.log("Error", err);
+            result(null, err);
+            return;
+        }
 
+        if (res.length === 0) {
+            // cuando no se encuentra ningún resultado, puedo manejarlo aquí
+            result(null, { epica: null, hu: null });
+        } else {
+            console.log("epica e historia creada creada", { epica: res[0].epica, hu: res[0].hu });
+            result(null, { res });
+            
+        }
+    });
+};
+
+//Esfuerzopivote.get= (epica,hu,result) => {
+  //  sql.query("SELECT epica,hu FROM tamanio WHERE id_proyecto = 30 AND grado = (SELECT MIN(grado) FROM tamanio);",epica,hu,(err, res) => {
+    //    if (err) {
+      //      console.log("Error", err);
+        //    result(null, err);
+
+        //  return;
+//        }
+//
+  //      console.log("epica e historia creada creada",{ epica: res.epica,hu:res.hu});
+    //    result(null,{epica:res.epica,hu:res.hu});
+   // });
+//};
 
 
 module.exports = Esfuerzopivote;

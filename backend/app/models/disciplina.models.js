@@ -19,7 +19,7 @@ Disciplina.create = (disciplinaNuevo, result) => {
 };
 
 Disciplina.getAll = result => {
-    sql.query("SELECT * FROM disciplina", (err, res) => {
+    sql.query("SELECT * FROM disciplina ", (err, res) => {
         if (err) {
             console.log("Error", err);
             result(null, err);

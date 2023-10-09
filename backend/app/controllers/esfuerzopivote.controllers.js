@@ -1,9 +1,49 @@
-const Esfuerzopivote = require("../models/esfuerzopivote.models");
-const Tamanio = require("../models/tamanio.models");
-const Maestroesfuerzo = require("../models/maestroesfuerzo.models");
-const Esfuerzo = require("../models/esfuerzo.models");
 
 
+const Esfuerzopivote = require('../models/esfuerzopivote.models');
+
+//const Tamanio = require("../models/tamanio.models");
+//const Maestroesfuerzo = require("../models/maestroesfuerzo.models");
+// const Esfuerzo = require("../models/esfuerzo.models");
+
+// Obtener epicas por proyecto
+// Obtener epicas por proyecto
+//exports.getEpicasPorProyecto= (req, res) => {
+  //  const id_proyecto = req.params.idProyecto;
+    //console.log(id_proyecto)
+    // Llama a la función para obtener las epicas por proyecto
+  //  Esfuerzopivote.getEpicasPorProyecto(id_proyecto, (err, epicas) => {
+//      if (err) {
+  ///      return res.status(500).json({
+     //     ok: false,
+       //   mensaje: 'Error obteniendo epicas por proyecto',
+         // errors: err
+       // });
+     // }
+  
+//      res.status(200).json({
+  //      ok: true,
+    //    epicas:epicas
+ //     });
+//    });
+  //};
+  
+  exports.get = (req, res) => {
+    Esfuerzopivote.get(req.params.idProyecto, (err, result) => {
+        if (err) {
+            return res.status(500).json({
+                ok: false,
+                mensaje: 'Error obteniendo epica e historia de usuario',
+                errors: err
+            });
+        } else {
+            res.status(200).json({
+                ok: true,
+               result
+            });
+        }
+    });
+};
 
 //Obtener todos los esfuerzos pivotes
 // =======================================
@@ -24,121 +64,91 @@ exports.getAll = (req, res) => {
     });
 };
 
-exports.create = async (req, res) => {
 
-    //var body = req.body;
-    const {
-        epica,
-        hu,
-        entendimiento,
-        disenio,
-        codificacion,
-        ajustes_sonar,
-        ajustes_revision_par,
-        pruebas_unitarias,
-        pruebas_servicio,
-        pruebas_UI,
-        documentacion,
-        soporte_bugs_SQA,
-        soporte_bugs_SQA_cliente,
-        soporte_bugs_UAT,
-        id_tamanio,
-    } = req.body;
+exports.create = (req, res) => { 
+  var body = req.body;
 
+  
+             const epica = body.epica;
+             const hu = body.hu;
+             const entendimiento = body.entendimiento;
+             const disenio = body.disenio;
+             const codificacion = body.codificacion;
+             const ajustes_sonar = body.ajustes_sonar;
+             const ajustes_revision_par = body.ajustes_revision_par;
+             const pruebas_unitarias = body.pruebas_unitarias;
+             const pruebas_servicio = body.pruebas_servicio;
+             const pruebas_UI = body.pruebas_UI;
+             const documentacion = body.documentacion;
+             const id_tamanio =body.id_tamanio;
 
-    const sumaEsfuerzo = Number(entendimiento) +
-        Number(disenio) +
-        Number(codificacion) +
-        Number(ajustes_sonar) +
-        Number(ajustes_revision_par) +
-        Number(pruebas_unitarias) +
-        Number(pruebas_servicio) +
-        Number(pruebas_UI) +
-        Number(documentacion) +
-        Number(soporte_bugs_SQA) +
-        Number(soporte_bugs_SQA_cliente)
+             const soporte_bugs_SQAresultado = Math.ceil((( entendimiento + disenio + codificacion + ajustes_sonar + ajustes_revision_par + pruebas_unitarias + pruebas_servicio + pruebas_UI + documentacion) * 0.25) / 0.75);
 
-    // Crear un nuevo esfuerzo pivote
+             const soporte_bugs_SQA_clienteresultado = Math.ceil(( entendimiento + disenio + codificacion + ajustes_sonar + ajustes_revision_par + pruebas_unitarias + pruebas_servicio + pruebas_UI + documentacion + soporte_bugs_SQAresultado) * 0.10);
+
+             const soporte_bugs_UATresultado = Math.ceil(( entendimiento + disenio + codificacion + ajustes_sonar + ajustes_revision_par + pruebas_unitarias + pruebas_servicio + pruebas_UI + documentacion + soporte_bugs_SQAresultado) * 0.05);
+
+             const sumaEsfuerzo = Math.ceil(entendimiento + disenio + codificacion + ajustes_sonar + ajustes_revision_par + pruebas_unitarias + pruebas_servicio + pruebas_UI + documentacion + soporte_bugs_SQAresultado + soporte_bugs_SQA_clienteresultado);
+             const epicahistoria =body.epicahistoria;
+             const epicas=body.epica
+             const id_proyecto=body.id_proyecto
+             
     const esfuerzopivote = new Esfuerzopivote({
-        epica,
-        hu,
-        entendimiento,
-        disenio,
-        codificacion,
-        ajustes_sonar,
-        ajustes_revision_par,
-        pruebas_unitarias,
-        pruebas_servicio,
-        pruebas_UI,
-        documentacion,
-        soporte_bugs_SQA,
-        soporte_bugs_SQA_cliente,
-        soporte_bugs_UAT,
-        total_esfuerzo_horas_h: sumaEsfuerzo,
-        id_tamanio,
-    });
+      epica: epica,
+      hu: hu,
+      entendimiento: entendimiento,
+      disenio: disenio,
+      codificacion: codificacion,
+      ajustes_sonar: ajustes_sonar,
+      ajustes_revision_par: ajustes_revision_par,
+      pruebas_unitarias: pruebas_unitarias,
+      pruebas_servicio: pruebas_servicio,
+      pruebas_UI: pruebas_UI,
+      documentacion: documentacion,
+      soporte_bugs_SQA: soporte_bugs_SQAresultado,
+      soporte_bugs_SQA_cliente: soporte_bugs_SQA_clienteresultado,
+      soporte_bugs_UAT: soporte_bugs_UATresultado,
+      total_esfuerzo_horas_h: sumaEsfuerzo,
+      id_tamanio: id_tamanio,
+      epicahistoria:epicahistoria,
+      epicas:epicas,
+      
+      id_proyecto:id_proyecto,
+      
+      
+  });
 
-    // Guardar esfuerzo pivote en la base de datos
-    await Esfuerzopivote.create(esfuerzopivote, (err, data) => {
-
-            if (err)  return res.status(400).json({ ok: false, mensaje: "Debe ingresar el id_usuario y el id_tamanio",});
-        
-        Tamanio.getConsultId(esfuerzopivote.id_tamanio, (error, tamanio) => {
-
-                if (error) return res.status(400).json({ok: false, mensaje: error,});
-
-            Maestroesfuerzo.getConsultByIdProyect(tamanio.id_proyecto, (falla, maestroesfuerzo) => {
-
-                    if (falla) return res.status(400).json({ok: false, mensaje: error,});
-                
-                const operacionhorashd = Math.ceil(((tamanio.grado * esfuerzopivote.total_esfuerzo_horas_h)) / 3);
-                const esfuerzo = new Esfuerzo({
-                    epica,
-                    hu,
-                    horas_hombre_dev: operacionhorashd,
-                    id_maestroesfuerzo: maestroesfuerzo.id_maestroesfuerzo,
-                    id_esfuerzopivote: data.id
-                })
-
-
-                Esfuerzo.create(esfuerzo, (fallo,esfuerzoCreado ) => {
-
-                    if (fallo) return res.status(400).json({ok: false, mensaje: "Ocurrio un error al crear un esfuerzo"});
-
-                    Esfuerzo.esfuerzosPorProyecto( maestroesfuerzo.id_proyecto, (err, esfuerzos) => {
-                        if (err) return res.status(500).json({ok: false, mensaje: 'Error cargando esfuerzo', errors: fallo });
-
-                        let horas = 0;
-
-                        esfuerzos.map( e => {
-
-                            horas +=  e.horas_hombre_dev
-                        })
-
-                        console.log();
-
-                        console.log("TOTAL: " + horas);
-
-                        Maestroesfuerzo.updateById(horas, maestroesfuerzo.id_maestroesfuerzo, (OcurrioError, maestro) => {
-
-                            if (OcurrioError) return res.status(400).json({ok: false, mensaje: "Ocurrio un error al actualizar las horas"});
-
-                            else {
-                                res.status(201).json({
-                                    ok: true,
-                                    msg: "Esfuerzo pivote registrado con exito"
-                                })
-                            }
-
-                        })
-
-                    });
-                    
-                });
-
-            })
-
-        });
-
-    });
+  Esfuerzopivote.create(esfuerzopivote, (err, data) => {
+      if (err) {
+          return res.status(400).json({
+              ok: false,
+              mensaje: "rellenar todos los campos",
+              errors: err
+          });
+      } else {
+          res.status(201).json({
+              ok: true,
+              esfuerzopivote
+             
+          });
+      }
+  });
 }
+//exports.get = (req, res) => {
+//    Esfuerzopivote.get((err, epica,hu) => {
+  //      if (err) {
+    //        return res.status(500).json({
+      ////        mensaje: 'Error cargando esfuerzo pivote',
+          //      errors: err
+   //         });
+     //   } else {
+       //     res.status(200).json({
+         //       ok: true,
+           //     epica ,
+                
+//            })
+  //      }
+    //});
+//};
+   
+  

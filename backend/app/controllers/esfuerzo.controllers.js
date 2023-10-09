@@ -21,54 +21,69 @@ exports.getAll= (req, res) => {
         }
     });
 };
-exports.create = async(req, res) => {
 
-    const {
+//David
+exports.create = (req, res) => {
 
-    } = req.body;
-
-
-    //const sumatotalhhd = Number()
-
-    const queryResult = await Esfuerzo.getOne(1);
-    const firstElemnt = queryResult[0];
-    const { grado, epica, hu, id_tamanio, id_usuario } = firstElemnt;
-
-
-    const queryResult1 = await Esfuerzo.getTwo(1);
-    const firstElemnt1 = queryResult1[0];
-    const { total_esfuerzo_horas_h } = firstElemnt1;
-
-
-    const operacionhhd = Math.ceil(((grado * total_esfuerzo_horas_h)) / 3);
-
-    // Crear un nuevo esfuerzo
+    var body = req.body;
     const esfuerzo = new Esfuerzo({
-        epica: epica,
-        hu: hu,
-        horas_hombre_dev: operacionhhd,
-        id_tamanio: id_tamanio,
-        id_usuario: id_usuario
+        epica: body.epica,
+        hu: body.hu,
+        horas_hombre_dev: body.horas_hombre_dev ,
+        id_maestroesfuerzo:body.id_maestroesfuerzo,
+        id_esfuerzopivote : body.id_esfuerzopivote
+       
+       
     });
+    console.log(esfuerzo)
 
-
-
-    // Guardar esfuerzo en la base de datos
     Esfuerzo.create(esfuerzo, (err, data) => {
         if (err) {
             return res.status(400).json({
                 ok: false,
-                mensaje: "Debe ingresar el id_usuario y el id_tamanio",
+                mensaje: "Debe ingresar el id_maestroesfuerzo y el id_esfuerzopivote",
                 errors: err
             });
         } else {
             res.status(201).json({
                 ok: true,
                 esfuerzo: esfuerzo,
-                esfuerzo: req.esfuerzo
+                esfuerzo: res.esfuerzo,
+                esfuerzo:data
             });
         }
     });
+
+
+
+    //const sumatotalhhd = Number()
+
+    //const queryResult = await Esfuerzo.getOne(1);
+    //const firstElemnt = queryResult[0];
+   // const { grado, epica, hu, id_tamanio, id_usuario } = firstElemnt;
+
+
+    //const queryResult1 = await Esfuerzo.getTwo(1);
+    //const firstElemnt1 = queryResult1[0];
+    //const { total_esfuerzo_horas_h } = firstElemnt1;
+
+
+    //const operacionhhd = Math.ceil(((grado * total_esfuerzo_horas_h)) / 3);
+
+    // Crear un nuevo esfuerzo
+   
+  // const esfuerzo = new Esfuerzo({
+     //   epica: epica,
+       // hu: hu,
+       // horas_hombre_dev: operacionhhd,
+        //id_tamanio: id_tamanio,
+       // id_usuario: id_usuario
+   // });
+
+
+
+    // Guardar esfuerzo en la base de datos
+   
 
 
 }

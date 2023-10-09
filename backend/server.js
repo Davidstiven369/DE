@@ -22,6 +22,7 @@ require("./app/routes/esfuerzo.routes")(app);
 require("./app/routes/maestroesfuerzo.routes")(app);
 require("./app/routes/proyecto.routes")(app);
 require("./app/routes/costeo.routes")(app);
+require("./app/routes/fibonacci.routes")(app);
 
 
 

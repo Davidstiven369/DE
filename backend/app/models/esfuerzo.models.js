@@ -7,13 +7,13 @@ const Esfuerzo = function(esfuerzo) {
     this.horas_hombre_dev = esfuerzo.horas_hombre_dev;
     this.id_maestroesfuerzo = esfuerzo.id_maestroesfuerzo;
     this.id_esfuerzopivote = esfuerzo.id_esfuerzopivote;
-    this.total=esfuerzo.total;
+ 
     
     
 }
-
+  
 Esfuerzo.create = (esfuerzoNuevo, result) => {
-    sql.query("INSERT INTO Esfuerzo SET ?", esfuerzoNuevo, (err, res) => {
+    sql.query("INSERT INTO  Esfuerzo SET ?", esfuerzoNuevo, (err, res) => {
         if (err) {
             console.log("error", err);
             result(err, null);
@@ -66,7 +66,7 @@ Esfuerzo.esfuerzosPorProyecto = (id_proyecto, result) => {
 
 Esfuerzo.getOne = (id) => {
     return new Promise((resolve, reject) => {
-        sql.query(`SELECT * FROM digitalestimator.tamanio WHERE id_tamanio = ${id}`, (err, res) => {
+        sql.query(`SELECT * FROM tamanio WHERE id_tamanio = ${id}`, (err, res) => {
             if (err) {
                 reject(err);
             }
@@ -77,7 +77,7 @@ Esfuerzo.getOne = (id) => {
 
 Esfuerzo.getTwo = (id) => {
     return new Promise((resolve, reject) => {
-        sql.query(`SELECT * FROM digitalestimator.esfuerzopivote WHERE id_tamanio = ${id}`, (err, res) => {
+        sql.query(`SELECT * FROM esfuerzopivote WHERE id_tamanio = ${id}`, (err, res) => {
             if (err) {
                 reject(err);
             }
@@ -85,6 +85,8 @@ Esfuerzo.getTwo = (id) => {
         });
     });
 }
+
+module.exports = Esfuerzo;
 
 /* Esfuerzo.getThree = (id) => {
     return new Promise((resolve, reject) => {
@@ -99,4 +101,3 @@ Esfuerzo.getTwo = (id) => {
 
 
 
-module.exports = Esfuerzo;
